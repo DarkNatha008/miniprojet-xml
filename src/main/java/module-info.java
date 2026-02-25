@@ -1,4 +1,4 @@
 module miniprojet_xml.miniprojet_xml {
-    requires javafx.controls;
+	requires java.sql;
     exports miniprojet_xml.miniprojet_xml;
 }

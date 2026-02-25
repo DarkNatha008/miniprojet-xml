@@ -8,33 +8,75 @@ import java.sql.Statement;
 
 public class DatabaseQuery {
 	
-	private Connection conn;
+	private Connection conn = DatabaseConnection.getConnection();
 	
 	public DatabaseQuery() {
-		Connection conn = DatabaseConnection.getConnection();
 	}
 	
-	public ResultSet loadData() {
+	/**
+	 * Charge les données de la base de la base de données dans l'application
+	 * @param query
+	 * @return le résultat de la requête
+	 */
+	public ResultSet loadData(String query) {
 		ResultSet res = null;
 		try {
 			Statement stmt = conn.createStatement();
-			res = stmt.executeQuery("SELECT * FROM client");
+			res = stmt.executeQuery(query);
+			return res;
 		}
 		catch(SQLException e) {
-			System.out.println("erreur connexion");
+			e.printStackTrace();
+			return null;
 		}
-		return res;
+		
 	}
+	/**
+	 * Permet d'obtenir le nombre de colonne retourné par la requête
+	 * @param data
+	 * @return le nombre colonne dans la table
+	 * @throws SQLException
+	 */
 	
 	public int getNbCols(ResultSet data) throws SQLException {
 		try {
-		ResultSetMetaData rsmd = data.getMetaData();
-		int nbCols = rsmd.getColumnCount();
-		return nbCols;
+			ResultSetMetaData rsmd = data.getMetaData();
+			int nbCols = rsmd.getColumnCount();
+			return nbCols;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 			return -1;
+		}
+	}
+	/**
+	 * Affiche les données retournées dans l'application
+	 * @param data
+	 * @throws SQLException
+	 */
+	public void displayAllCols(ResultSet data) throws SQLException {
+	
+		try {
+			ResultSetMetaData rsmd = data.getMetaData();
+			int nbCols = getNbCols(data);
+			for(int i=1; i<nbCols; i++) {
+				System.out.print("|"+rsmd.getColumnName(i) + "|");
+			}
+			System.out.println();
+			System.out.println("---------------------------");
+			System.out.println();
+			while(data.next()) {
+				
+				for(int i=1; i<nbCols; i++) {
+					System.out.print("|"+data.getString(i) + "|");
+					
+				}
+				System.out.println();
+				System.out.println();
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("ipossible d'afficher les résultats");
 		}
 	}
 

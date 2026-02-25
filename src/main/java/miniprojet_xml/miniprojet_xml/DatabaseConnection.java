@@ -10,6 +10,11 @@ public class DatabaseConnection {
 	private static final String user = "root";
 	private static final String password = "";
 	
+	/**
+	 * Permet de connecter l'application à la base de données
+	 * @return la connexion à la base de données
+	 */
+	
 	public static Connection getConnection() {
 		try {
 			return DriverManager.getConnection(driver, user, password);

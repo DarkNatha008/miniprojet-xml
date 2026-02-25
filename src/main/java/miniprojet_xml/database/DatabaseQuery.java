@@ -1,4 +1,4 @@
-package miniprojet_xml.miniprojet_xml;
+package miniprojet_xml.database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -59,7 +59,7 @@ public class DatabaseQuery {
 		try {
 			ResultSetMetaData rsmd = data.getMetaData();
 			int nbCols = getNbCols(data);
-			for(int i=1; i<nbCols; i++) {
+			for(int i=1; i<=nbCols; i++) {
 				System.out.print("|"+rsmd.getColumnName(i) + "|");
 			}
 			System.out.println();
@@ -67,7 +67,7 @@ public class DatabaseQuery {
 			System.out.println();
 			while(data.next()) {
 				
-				for(int i=1; i<nbCols; i++) {
+				for(int i=1; i<=nbCols; i++) {
 					System.out.print("|"+data.getString(i) + "|");
 					
 				}
@@ -76,7 +76,7 @@ public class DatabaseQuery {
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("ipossible d'afficher les résultats");
+			System.out.println("impossible d'afficher les résultats");
 		}
 	}
 

@@ -76,6 +76,7 @@ public class DatabaseQuery {
 			}
 		}
 		catch(SQLException e) {
+			e.printStackTrace();
 			System.out.println("ipossible d'afficher les résultats");
 		}
 	}

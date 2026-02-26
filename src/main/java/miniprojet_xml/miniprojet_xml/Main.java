@@ -5,14 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+
 public class Main {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws SQLException, JDOMException {
 		DatabaseQuery data = new DatabaseQuery();
 		System.out.println("Bienvenue sur l'application scanneur de fichier XML");
 		System.out.println("");
-		ResultSet res= data.loadData("SELECT * FROM produit");
-		data.displayAllCols(res);
+		
+		XMLParser parser = new XMLParser();
+		Document document = parser.createDocument("produits", "/xml/Produits.xml");
+		parser.display("/xml/Produits.xml");
 		
 		
 	}

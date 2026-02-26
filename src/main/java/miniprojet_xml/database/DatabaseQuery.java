@@ -79,5 +79,42 @@ public class DatabaseQuery {
 			System.out.println("impossible d'afficher les résultats");
 		}
 	}
+	
+	/**
+	 * Insère des données dans la table de la base de données de l'application
+	 * @param table
+	 * @param data
+	 * @throws SQLException
+	 */
+	public boolean insertData(String table, String data) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeQuery("insert into "+table+" values ("+data+");");
+			return true;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	/**
+	 * Exécute la requête INSERT, UPDATE ou DELETE sur la base de données de l'application
+	 * @param query
+	 * @throws SQLException
+	 */
+	public boolean updateQuery(String query) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			return true;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
 
 }

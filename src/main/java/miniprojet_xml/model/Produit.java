@@ -35,4 +35,10 @@ public class Produit {
 	public void setQuantite(double quantite) {
 		this.quantite = quantite;
 	}
+	
+	public String generateSQLInsertionRequest(double priceMultiplicator) {
+		String request = "insert into produit(nom, prix, quantité) values('";
+		request = request+this.name+"', "+this.prix*priceMultiplicator+", "+this.quantite+");";
+		return request;
+	}
 }

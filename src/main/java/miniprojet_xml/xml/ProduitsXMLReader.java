@@ -13,8 +13,8 @@ import org.jdom2.input.SAXBuilder;
 import miniprojet_xml.model.Produit;
 
 
-public class ProduitsXMLReader {
-	public void read(File file) throws JDOMException, IOException {
+public class ProduitsXMLReader implements XMLReader {
+	public void readAndDisplay(File file) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document document = builder.build(file);
 

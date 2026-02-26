@@ -16,7 +16,6 @@ public class Main {
 		System.out.println("");
 		
 		XMLParser parser = new XMLParser();
-		Document document = parser.createDocument("produits", "/xml/Produits.xml");
 		parser.display("/xml/Produits.xml");
 		
 		

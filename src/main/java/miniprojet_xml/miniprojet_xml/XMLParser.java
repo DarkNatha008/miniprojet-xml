@@ -13,12 +13,11 @@ import org.xml.sax.InputSource;
 
 public class XMLParser {
 	
-	public Document createDocument(String root, String file) {
-		Element rootxml = new Element(root);
-		DocType docType = new DocType(root, file);
-		Document document = new Document(rootxml, docType);
-		return document;
-	}
+	/**
+	 * Affiche le contenu du fichier Produits.xml sous format xml
+	 * @param path
+	 * @throws JDOMException
+	 */
 	
 	public void display(String path) throws JDOMException {
 		try {

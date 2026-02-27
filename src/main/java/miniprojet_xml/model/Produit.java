@@ -1,12 +1,19 @@
 package miniprojet_xml.model;
 
 public class Produit {
-
+	private int id;
 	private String name;
 	private double prix;
 	private int quantite;
 	
 	public Produit(String name, double prix, int quantite){
+		this.setName(name);
+		this.setPrix(prix);
+		this.setQuantite(quantite);
+	}
+	
+	public Produit(int id, String name, double prix, int quantite){
+		this.setId(id);
 		this.setName(name);
 		this.setPrix(prix);
 		this.setQuantite(quantite);
@@ -40,5 +47,13 @@ public class Produit {
 		String request = "insert into produit(nom, prix, quantité) values('";
 		request = request+this.name+"', "+this.prix*priceMultiplicator+", "+this.quantite+");";
 		return request;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

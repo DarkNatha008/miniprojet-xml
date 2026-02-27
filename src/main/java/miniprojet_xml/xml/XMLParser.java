@@ -25,6 +25,8 @@ import org.xml.sax.InputSource;
 
 import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.database.dao.ClientDAO;
+import miniprojet_xml.database.dao.CommandeDAO;
+import miniprojet_xml.database.dao.ProduitDAO;
 import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
@@ -115,6 +117,8 @@ public class XMLParser {
 		System.out.println("Insertion de "+path+" dans la base de données");
 		
 		ClientDAO clientDAO = new ClientDAO();
+		ProduitDAO produitDAO = new ProduitDAO();
+		CommandeDAO commandeDAO = new CommandeDAO();
 		
 		// connexion à la base de données
 		
@@ -152,10 +156,8 @@ public class XMLParser {
 				listProduit.add(new Produit(p.getChildText("nom"), Double.valueOf(p.getChildText("prix")), Integer.parseInt(p.getChildText("quantité"))));
 			}
 			
-			
 			try {
 				Client client = clientDAO.findByEmail(email);
-				
 				
 				if(client==null)  {
 					try {
@@ -169,82 +171,24 @@ public class XMLParser {
 					}
 				}
 				
-				HashMap<String, Integer> productNameIdConversion = new HashMap<String, Integer>();
-				
 				for(Produit p : listProduit) {
 					if(p.getQuantite()<=0 ) {
 						System.out.println("Le produit "+p.getName()+" à une quantité commandée négative.");
 						return;
 					}
-					ps = conn.prepareStatement("SELECT id, quantité FROM produit WHERE nom=?");
-					ps.setString(1, p.getName());
-					rs = ps.executeQuery();
-					if(!rs.next()) {
+					Produit produitInDatabase=produitDAO.findByName(p.getName());
+					if(produitInDatabase==null) {
 						System.out.println("Le produit "+p.getName()+" n'existe pas.");
 						return;
 					}
-					if(rs.getInt(2)<p.getQuantite()) {
+					if(produitInDatabase.getQuantite()<p.getQuantite()) {
 						System.out.println("Le produit "+p.getName()+" à une quantité commandée inférieur au stock.");
 						return;
 					}
-					productNameIdConversion.put(p.getName(), rs.getInt(1));
+					p.setId(produitInDatabase.getId());
 				}
 				
-				
-				ps = conn.prepareStatement("SELECT MAX(CAST(SUBSTRING(id,2) AS UNSIGNED)) AS max_id FROM commande");
-				rs = ps.executeQuery();
-
-				int nextId = 1;
-
-				if (rs.next()) {
-				    nextId = rs.getInt("max_id")+1;
-				}
-				
-				String newCommandeId = "C"+nextId;
-				try {
-				
-					ps = conn.prepareStatement("INSERT INTO commande(id, idClient, date) VALUES(?,?,?)");
-					ps.setString(1, newCommandeId);
-					ps.setInt(2, client.getId());
-					ps.setDate(3, Date.valueOf(date));
-					ps.executeUpdate();
-					System.out.println("Commande créé : " + newCommandeId);
-				}
-				catch(SQLException e) {
-					e.printStackTrace();
-					System.out.println("Erreur dans la création de la commande : " + newCommandeId);
-					throw e;
-				}
-				
-				for(Produit p : listProduit) {
-					try {
-						ps = conn.prepareStatement("INSERT INTO lignes_commande(idCommande, idProduit, prixAchat, quantité) VALUES(?,?,?,?)");
-						ps.setString(1, newCommandeId);
-						ps.setInt(2, productNameIdConversion.get(p.getName()));
-						ps.setDouble(3, p.getPrix());
-						ps.setInt(4, p.getQuantite());
-						ps.executeUpdate();
-						System.out.println("Ligne de commande insérée pour : " + p.getName());
-					}
-					catch(SQLException e) {
-						e.printStackTrace();
-						System.out.println("Erreur pour l'insertion ligne commande pour : " + p.getName());
-						throw e;
-					}
-					try {
-						ps = conn.prepareStatement("UPDATE produit SET quantité=quantité-? WHERE id=?");
-						ps.setInt(1, p.getQuantite());
-						ps.setInt(2, productNameIdConversion.get(p.getName()));
-						ps.executeUpdate();
-						System.out.println("Quantité mise à jour pour : " + p.getName());
-
-					}
-					catch(SQLException e) {
-						e.printStackTrace();
-						System.out.println("Erreur pour la mise à jour de la quantité du produit : " + p.getName());
-						throw e;
-					}
-				}
+				commandeDAO.insert(new Commande(client, date, listProduit));
 				
 			}
 			catch(SQLException e) {

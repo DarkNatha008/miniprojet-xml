@@ -1,11 +1,19 @@
 package miniprojet_xml.model;
 
 public class Client {
+	private int id;
 	private String nomClient;
 	private String email;
 	private String ville;
 	
 	public Client(String nomClient, String email, String ville) {
+		this.setNomClient(nomClient);
+		this.setEmail(email);
+		this.setVille(ville);
+	}
+	
+	public Client(int id, String nomClient, String email, String ville) {
+		this.setId(id);
 		this.setNomClient(nomClient);
 		this.setEmail(email);
 		this.setVille(ville);
@@ -33,5 +41,13 @@ public class Client {
 
 	public void setVille(String ville) {
 		this.ville = ville;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

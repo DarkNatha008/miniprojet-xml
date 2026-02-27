@@ -24,6 +24,7 @@ import org.jdom2.output.XMLOutputter;
 import org.xml.sax.InputSource;
 
 import miniprojet_xml.database.DatabaseConnection;
+import miniprojet_xml.database.dao.ClientDAO;
 import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
@@ -113,9 +114,15 @@ public class XMLParser {
 		
 		System.out.println("Insertion de "+path+" dans la base de données");
 		
+		ClientDAO clientDAO = new ClientDAO();
+		
 		// connexion à la base de données
 		
 		Connection conn = DatabaseConnection.getConnection();
+		
+		PreparedStatement ps;
+		ResultSet rs;
+
 		
 		// Chargement du fichier xml
 		
@@ -147,28 +154,13 @@ public class XMLParser {
 			
 			
 			try {
-				PreparedStatement ps = conn.prepareStatement("SELECT * FROM client WHERE email=?");
+				Client client = clientDAO.findByEmail(email);
 				
 				
-				ps.setString(1, email);
-				ResultSet rs = ps.executeQuery();
-				
-				int idClient = -1;
-				
-				if(rs.next()) {
-					idClient = rs.getInt("id");
-				} else {
+				if(client==null)  {
 					try {
-						ps = conn.prepareStatement("INSERT INTO client(nom_client, email, ville) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-						ps.setString(1, nameClient);
-						ps.setString(2, email);
-						ps.setString(3, ville);
-						ps.executeUpdate();
-						
-						ResultSet generatedKeys = ps.getGeneratedKeys();
-						if (generatedKeys.next()) {
-							idClient = generatedKeys.getInt(1);
-					    }
+						client = new Client(nameClient, email, ville);
+						client.setId(clientDAO.insert(client));
 						System.out.println("Client créé : " + nameClient);
 					} catch(SQLException e) {
 						e.printStackTrace();
@@ -213,7 +205,7 @@ public class XMLParser {
 				
 					ps = conn.prepareStatement("INSERT INTO commande(id, idClient, date) VALUES(?,?,?)");
 					ps.setString(1, newCommandeId);
-					ps.setInt(2, idClient);
+					ps.setInt(2, client.getId());
 					ps.setDate(3, Date.valueOf(date));
 					ps.executeUpdate();
 					System.out.println("Commande créé : " + newCommandeId);

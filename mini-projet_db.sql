@@ -51,8 +51,21 @@ INSERT INTO `client` (`id`, `nom-client`, `email`, `ville`) VALUES
 CREATE TABLE `commande` (
   `id` varchar(32) NOT NULL,
   `idClient` int(11) NOT NULL,
-  `idProduit` int(11) NOT NULL,
   `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `lignes_commande`
+--
+
+CREATE TABLE `lignes_commande` (
+  `id` int(11) NOT NULL,
+  `idCommande` varchar(32) NOT NULL,
+  `idProduit` int(11) NOT NULL,
+  `prixAchat` double NOT NULL,
+  `quantité` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -93,6 +106,12 @@ ALTER TABLE `commande`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `lignes_commande`
+--
+ALTER TABLE `lignes_commande`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `produit`
 --
 ALTER TABLE `produit`
@@ -108,6 +127,12 @@ ALTER TABLE `produit`
 ALTER TABLE `client`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
+--
+-- AUTO_INCREMENT pour la table `lignes_commande`
+--
+ALTER TABLE `lignes_commande`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
 --
 -- AUTO_INCREMENT pour la table `produit`
 --

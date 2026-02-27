@@ -111,6 +111,8 @@ public class XMLParser {
 	
 	public void insertCommandeData(String path) throws JDOMException, SQLException {
 		
+		System.out.println("Insertion de "+path+" dans la base de données");
+		
 		// connexion à la base de données
 		
 		Connection conn = DatabaseConnection.getConnection();
@@ -129,16 +131,15 @@ public class XMLParser {
 			Element racine = document.getRootElement();
 			
 			Element elementClient = racine.getChildren("client").get(0);
-			String nomClient = elementClient.getChildText("nom-client");
+			String nameClient = elementClient.getChildText("nom-client");
 			String email = elementClient.getChildText("email");
 			String ville = elementClient.getChildText("ville");
-			Client client = new Client(nomClient, email, ville);
 			
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
 			LocalDate date = LocalDate.parse(racine.getChildText("date"), formatter);
 			
 			
-			List<Element> produits = racine.getChildren("produit");
+			List<Element> produits = racine.getChildren("produits").get(0).getChildren("produit");
 			ArrayList<Produit> listProduit = new ArrayList<Produit>();
 			for (Element p : produits) {
 				listProduit.add(new Produit(p.getChildText("nom"), Double.valueOf(p.getChildText("prix")), Integer.parseInt(p.getChildText("quantité"))));
@@ -159,17 +160,20 @@ public class XMLParser {
 				} else {
 					try {
 						ps = conn.prepareStatement("INSERT INTO client(nom_client, email, ville) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-						ps.setString(1, client.getNomClient());
+						ps.setString(1, nameClient);
 						ps.setString(2, email);
-						ps.setString(3, client.getVille());
+						ps.setString(3, ville);
 						ps.executeUpdate();
 						
 						ResultSet generatedKeys = ps.getGeneratedKeys();
 						if (generatedKeys.next()) {
 							idClient = generatedKeys.getInt(1);
 					    }
+						System.out.println("Client créé : " + nameClient);
 					} catch(SQLException e) {
 						e.printStackTrace();
+						System.out.println("Erreur dans la création du client : " + nameClient);
+						throw e;
 					}
 				}
 				
@@ -195,43 +199,71 @@ public class XMLParser {
 				}
 				
 				
-				ps = conn.prepareStatement("SELECT id FROM commande ORDER BY id DESC LIMIT 1");
+				ps = conn.prepareStatement("SELECT MAX(CAST(SUBSTRING(id,2) AS UNSIGNED)) AS max_id FROM commande");
 				rs = ps.executeQuery();
 
 				int nextId = 1;
 
 				if (rs.next()) {
-				    String lastId = rs.getString("id");
-				    nextId = Integer.parseInt(lastId.substring(1)) + 1;
+				    nextId = rs.getInt("max_id")+1;
 				}
+				
 				String newCommandeId = "C"+nextId;
-				ps = conn.prepareStatement("INSERT INTO commande(id, idClient, date) VALUES(?,?,?)");
-				ps.setString(1, newCommandeId);
-				ps.setInt(2, idClient);
-				ps.setDate(3, Date.valueOf(date));
-				ps.executeUpdate();
+				try {
+				
+					ps = conn.prepareStatement("INSERT INTO commande(id, idClient, date) VALUES(?,?,?)");
+					ps.setString(1, newCommandeId);
+					ps.setInt(2, idClient);
+					ps.setDate(3, Date.valueOf(date));
+					ps.executeUpdate();
+					System.out.println("Commande créé : " + newCommandeId);
+				}
+				catch(SQLException e) {
+					e.printStackTrace();
+					System.out.println("Erreur dans la création de la commande : " + newCommandeId);
+					throw e;
+				}
 				
 				for(Produit p : listProduit) {
-					ps = conn.prepareStatement("INSERT INTO ligne_commande(idCommande, idProduit, prixAchat, quantité) VALUES(?,?,?,?)");
-					ps.setString(1, newCommandeId);
-					ps.setInt(2, productNameIdConversion.get(p.getName()));
-					ps.setDouble(3, p.getPrix());
-					ps.setInt(4, p.getQuantite());
-					ps.executeUpdate();
-					
-					ps = conn.prepareStatement("UPDATE produit SET quantité=quantité-? WHERE id=?");
-					ps.setInt(1, p.getQuantite());
-					ps.setInt(2, productNameIdConversion.get(p.getName()));
-					ps.executeUpdate();
+					try {
+						ps = conn.prepareStatement("INSERT INTO lignes_commande(idCommande, idProduit, prixAchat, quantité) VALUES(?,?,?,?)");
+						ps.setString(1, newCommandeId);
+						ps.setInt(2, productNameIdConversion.get(p.getName()));
+						ps.setDouble(3, p.getPrix());
+						ps.setInt(4, p.getQuantite());
+						ps.executeUpdate();
+						System.out.println("Ligne de commande insérée pour : " + p.getName());
+					}
+					catch(SQLException e) {
+						e.printStackTrace();
+						System.out.println("Erreur pour l'insertion ligne commande pour : " + p.getName());
+						throw e;
+					}
+					try {
+						ps = conn.prepareStatement("UPDATE produit SET quantité=quantité-? WHERE id=?");
+						ps.setInt(1, p.getQuantite());
+						ps.setInt(2, productNameIdConversion.get(p.getName()));
+						ps.executeUpdate();
+						System.out.println("Quantité mise à jour pour : " + p.getName());
+
+					}
+					catch(SQLException e) {
+						e.printStackTrace();
+						System.out.println("Erreur pour la mise à jour de la quantité du produit : " + p.getName());
+						throw e;
+					}
 				}
 				
 			}
 			catch(SQLException e) {
 				e.printStackTrace();
+				throw e;
 			}
-	}
+		System.out.println("Fichier " + path + " traité.");
+		}
 		catch(java.io.IOException e) {
 			e.printStackTrace();
+			
 		}
 	}
 }

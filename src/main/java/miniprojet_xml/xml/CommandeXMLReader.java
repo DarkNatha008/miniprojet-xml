@@ -18,6 +18,13 @@ import miniprojet_xml.model.Produit;
 
 
 public class CommandeXMLReader {
+	/**
+     * Lit le fichier XML et affiche ses données formatées dans la console.
+     * 
+     * @param file fichier XML représentant une commande
+     * @throws JDOMException en cas d’erreur de parsing XML
+     * @throws IOException en cas d’erreur de lecture du fichier
+     */
 	public void readAndDisplay(File file) throws JDOMException, IOException {
 		SAXBuilder builder = new SAXBuilder();
 		Document document = builder.build(file);
@@ -39,6 +46,14 @@ public class CommandeXMLReader {
 		    System.out.println();
 		}
 	}
+	/**
+     * Lit le fichier XML et construit un objet métier Commande contenant un Client, une date et une liste de Produits.
+     * 
+     * @param file fichier XML de commande
+     * @return objet Commande construit à partir des données XML
+     * @throws JDOMException en cas d’erreur XML
+     * @throws IOException en cas d’erreur de lecture
+     */
 	public Commande readAndMakeCommande(File file) throws JDOMException, IOException{
 		SAXBuilder builder = new SAXBuilder();
 		Document document = builder.build(file);
@@ -58,7 +73,7 @@ public class CommandeXMLReader {
 		List<Element> produits = racine.getChildren("produit");
 		ArrayList<Produit> listProduit = new ArrayList<Produit>();
 		for (Element p : produits) {
-			listProduit.add(new Produit(p.getChildText("nom"), Double.valueOf(p.getChildText("prix")), Double.valueOf(p.getChildText("quantité"))));
+			listProduit.add(new Produit(p.getChildText("nom"), Double.valueOf(p.getChildText("prix")), Integer.parseInt(p.getChildText("quantité"))));
 		}
 		
 		Commande commande = new Commande(client, date, listProduit);

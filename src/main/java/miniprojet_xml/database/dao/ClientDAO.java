@@ -9,6 +9,12 @@ public class ClientDAO {
 	public ClientDAO() {
 		
 	}
+	/**
+     * Recherche un client dans la base de données à partir de son email.
+     * @param email Email du client à rechercher
+     * @return L'objet Client correspondant si trouvé, sinon null
+     * @throws SQLException Si une erreur SQL survient
+     */
     public Client findByEmail(String email) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM client WHERE email=?");
@@ -19,7 +25,12 @@ public class ClientDAO {
         }
         return null;
     }
-
+    /**
+     * Insère un nouveau client dans la base de données.
+     * @param client Objet Client à insérer
+     * @return L'identifiant auto-généré du client inséré
+     * @throws SQLException Si l'insertion échoue ou si l'id ne peut être récupéré
+     */
     public int insert(Client client) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO client(nom_client, email, ville) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);

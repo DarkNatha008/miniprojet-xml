@@ -13,6 +13,14 @@ public class LigneCommandeDAO {
 	public LigneCommandeDAO() {
 		
 	}
+	/**
+     * Insère une ligne de commande dans la table "lignes_commande"
+     * et met à jour la quantité disponible du produit.
+     * @param produit Produit commandé
+     * @param newCommandeId Id de la commande (ex: "C10")
+     * @return true si l'insertion et la mise à jour sont réussies
+     * @throws SQLException Si une erreur SQL survient
+     */
 	public boolean insert(Produit produit, String newCommandeId) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps;

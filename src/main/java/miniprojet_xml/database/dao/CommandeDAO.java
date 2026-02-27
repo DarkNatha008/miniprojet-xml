@@ -15,6 +15,12 @@ public class CommandeDAO {
 	public CommandeDAO() {
 		
 	}
+	/**
+     * Insère une commande dans la base de données.
+     * @param commande Objet Commande contenant le client, la date et la liste des produits
+     * @return L'identifiant de la commande généré (exemple: "C10")
+     * @throws SQLException Si une erreur SQL survient
+     */
 	public String insert(Commande commande) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
 		PreparedStatement ps = conn.prepareStatement("SELECT MAX(CAST(SUBSTRING(id,2) AS UNSIGNED)) AS max_id FROM commande");

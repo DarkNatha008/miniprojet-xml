@@ -116,16 +116,18 @@ public class XMLParser {
 		
 		System.out.println("Insertion de "+path+" dans la base de données");
 		
-		ClientDAO clientDAO = new ClientDAO();
-		ProduitDAO produitDAO = new ProduitDAO();
-		CommandeDAO commandeDAO = new CommandeDAO();
-		
 		// connexion à la base de données
 		
 		Connection conn = DatabaseConnection.getConnection();
 		
 		PreparedStatement ps;
 		ResultSet rs;
+		
+		// création des DAOs
+		
+		ClientDAO clientDAO = new ClientDAO();
+		ProduitDAO produitDAO = new ProduitDAO();
+		CommandeDAO commandeDAO = new CommandeDAO();
 
 		
 		// Chargement du fichier xml

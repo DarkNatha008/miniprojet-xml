@@ -13,6 +13,12 @@ public class ProduitDAO {
 	public ProduitDAO() {
 		
 	}
+	/**
+     * Recherche un produit dans la base de données à partir de son nom.
+     * @param name Nom du produit
+     * @return L'objet Produit correspondant si trouvé, sinon null
+     * @throws SQLException Si une erreur SQL survient
+     */
 	public Produit findByName(String name) throws SQLException {
 		Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM produit WHERE nom=?");
@@ -23,6 +29,12 @@ public class ProduitDAO {
         }
 		return null;
 	}
+	/**
+     * Insère un nouveau produit dans la base de données.
+     * @param produit Objet Produit à insérer
+     * @return L'identifiant auto-généré du produit inséré
+     * @throws SQLException Si l'insertion échoue ou si l'id ne peut être récupéré
+     */
 	public int insert(Produit produit) throws SQLException {
         Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement("INSERT INTO produit(nom, prix, quantité) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);

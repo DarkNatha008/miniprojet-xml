@@ -1,4 +1,4 @@
-package miniprojet_xml.database;
+package miniprojet_xml.xml;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -14,6 +14,8 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.xml.sax.InputSource;
+
+import miniprojet_xml.database.DatabaseConnection;
 
 public class XMLParser {
 	

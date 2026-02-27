@@ -9,7 +9,7 @@ import org.jdom2.Document;
 import org.jdom2.JDOMException;
 
 import miniprojet_xml.database.DatabaseQuery;
-import miniprojet_xml.database.XMLParser;
+import miniprojet_xml.xml.XMLParser;
 
 public class Main {
 

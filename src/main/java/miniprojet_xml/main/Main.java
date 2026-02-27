@@ -1,4 +1,4 @@
-package miniprojet_xml.miniprojet_xml;
+package miniprojet_xml.main;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

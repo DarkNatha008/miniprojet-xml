@@ -2,16 +2,16 @@ package miniprojet_xml.database.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.model.Produit;
 
 public class LigneCommandeDAO {
+	private Connection conn;
+	
 	public LigneCommandeDAO() {
-		
+		// connexion à la base de données
+		conn = DatabaseConnection.getConnection();
 	}
 	/**
      * Insère une ligne de commande dans la table "lignes_commande"
@@ -22,7 +22,6 @@ public class LigneCommandeDAO {
      * @throws SQLException Si une erreur SQL survient
      */
 	public boolean insert(Produit produit, String newCommandeId) throws SQLException {
-        Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps;
         try {
 			ps = conn.prepareStatement("INSERT INTO lignes_commande(idCommande, idProduit, prixAchat, quantité) VALUES(?,?,?,?)");

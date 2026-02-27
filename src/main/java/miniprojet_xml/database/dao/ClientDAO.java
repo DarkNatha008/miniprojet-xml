@@ -6,8 +6,11 @@ import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.model.Client;
 
 public class ClientDAO {
+	private Connection conn;
+
 	public ClientDAO() {
-		
+		// connexion à la base de données
+		conn = DatabaseConnection.getConnection();
 	}
 	/**
      * Recherche un client dans la base de données à partir de son email.

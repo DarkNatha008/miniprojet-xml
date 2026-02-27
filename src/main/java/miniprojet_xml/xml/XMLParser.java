@@ -1,29 +1,18 @@
 package miniprojet_xml.xml;
 
-import java.io.File;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.xml.sax.InputSource;
-
-import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.database.dao.ClientDAO;
 import miniprojet_xml.database.dao.CommandeDAO;
 import miniprojet_xml.database.dao.ProduitDAO;
@@ -64,9 +53,9 @@ public class XMLParser {
 	
 	public void insertProductData(String path) throws JDOMException, SQLException {
 		
-		// connexion à la base de données
+		// création du DAO
 		
-		Connection conn = DatabaseConnection.getConnection();
+		ProduitDAO produitDAO = new ProduitDAO();
 		
 		// Chargement du fichier xml
 		
@@ -81,19 +70,15 @@ public class XMLParser {
 			Element root = document.getRootElement();
 			List<Element> produits = root.getChildren();
 			
-			//preparation de la requête
-			
 			try {
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO produit (nom, prix, quantité) VALUES (?,?,?)");
+				// appel de l'insertion DAO pour chaque produit
 				for(Element produit : produits) {
 					String nom = produit.getChildText("nom");
 					double prix = Double.parseDouble(produit.getChildText("prix")) * 2;
 					int quantite = Integer.parseInt(produit.getChildText("quantité"));
 				
-					ps.setString(1, nom);
-					ps.setDouble(2, prix);
-					ps.setInt(3, quantite);
-					ps.executeUpdate();
+					produitDAO.insert(new Produit(nom, prix, quantite));
+
 				}
 			}
 			catch(SQLException e) {
@@ -116,12 +101,7 @@ public class XMLParser {
 		
 		System.out.println("Insertion de "+path+" dans la base de données");
 		
-		// connexion à la base de données
 		
-		Connection conn = DatabaseConnection.getConnection();
-		
-		PreparedStatement ps;
-		ResultSet rs;
 		
 		// création des DAOs
 		

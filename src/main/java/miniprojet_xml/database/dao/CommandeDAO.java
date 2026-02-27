@@ -7,13 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import miniprojet_xml.database.DatabaseConnection;
-import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
 
 public class CommandeDAO {
+	private Connection conn;
+
 	public CommandeDAO() {
-		
+		// connexion à la base de données
+		conn = DatabaseConnection.getConnection();
 	}
 	/**
      * Insère une commande dans la base de données.
@@ -22,6 +24,7 @@ public class CommandeDAO {
      * @throws SQLException Si une erreur SQL survient
      */
 	public String insert(Commande commande) throws SQLException {
+		// connexion à la base de données
         Connection conn = DatabaseConnection.getConnection();
 		PreparedStatement ps = conn.prepareStatement("SELECT MAX(CAST(SUBSTRING(id,2) AS UNSIGNED)) AS max_id FROM commande");
 		ResultSet rs = ps.executeQuery();

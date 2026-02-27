@@ -10,8 +10,11 @@ import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.model.Produit;
 
 public class ProduitDAO {
+	private Connection conn;
+
 	public ProduitDAO() {
-		
+		// connexion à la base de données
+		conn = DatabaseConnection.getConnection();
 	}
 	/**
      * Recherche un produit dans la base de données à partir de son nom.

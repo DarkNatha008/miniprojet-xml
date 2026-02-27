@@ -17,6 +17,7 @@ public class Main {
 		
 		XMLParser parser = new XMLParser();
 		parser.display("/xml/Produits.xml");
+		parser.insertData("/xml/Produits.xml");
 		
 		
 	}

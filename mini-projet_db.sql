@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `client` (
   `id` int(11) NOT NULL,
-  `nom-client` varchar(32) NOT NULL,
+  `nom_client` varchar(32) NOT NULL,
   `email` varchar(32) NOT NULL UNIQUE,
   `ville` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,7 +38,7 @@ CREATE TABLE `client` (
 -- Déchargement des données de la table `client`
 --
 
-INSERT INTO `client` (`id`, `nom-client`, `email`, `ville`) VALUES
+INSERT INTO `client` (`id`, `nom_client`, `email`, `ville`) VALUES
 (1, 'CLAUDE', 'claude@mail.com', 'cherbourg'),
 (2, 'jean', 'jean@gmail.com', 'Caen');
 

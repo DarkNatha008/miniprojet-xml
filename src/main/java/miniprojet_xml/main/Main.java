@@ -19,9 +19,10 @@ public class Main {
 		System.out.println("");
 		
 		XMLParser parser = new XMLParser();
-		parser.display("/xml/Produits.xml");
-		parser.insertData("/xml/Produits.xml");
+		parser.displayProduct("/xml/Produits.xml");
+		parser.insertProductData("/xml/Produits.xml");
 		
+		parser.insertCommandeData("/xml/Commande.xml");
 		
 	}
 

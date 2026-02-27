@@ -39,8 +39,4 @@ public class Commande {
 		this.date = date;
 	}
 	
-	public String generateSQLInsertionRequest() {
-		
-		return null;
-	}
 }

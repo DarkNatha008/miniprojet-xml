@@ -23,7 +23,6 @@ public class ProduitDAO {
      * @throws SQLException Si une erreur SQL survient
      */
 	public Produit findByName(String name) throws SQLException {
-		Connection conn = DatabaseConnection.getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM produit WHERE nom=?");
         ps.setString(1, name);
         ResultSet rs = ps.executeQuery();
@@ -33,22 +32,30 @@ public class ProduitDAO {
 		return null;
 	}
 	/**
-     * Insère un nouveau produit dans la base de données.
+     * Insère un nouveau produit dans la base de données s'il n'existe pas ou augmente sa quantité s'il existe.
      * @param produit Objet Produit à insérer
-     * @return L'identifiant auto-généré du produit inséré
+     * @return L'identifiant du produit inséré ou mis à jour.
      * @throws SQLException Si l'insertion échoue ou si l'id ne peut être récupéré
      */
 	public int insert(Produit produit) throws SQLException {
-        Connection conn = DatabaseConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO produit(nom, prix, quantité) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
-        ps.setString(1, produit.getName());
-        ps.setDouble(2, produit.getPrix());
-        ps.setInt(3, produit.getQuantite());
-        ps.executeUpdate();
-        ResultSet rs = ps.getGeneratedKeys();
-        if(rs.next()) {
-            return rs.getInt(1);
-        }
-        throw new SQLException("Impossible de récupérer l'id du nouveau produit");
+		Produit produitInDatabase=this.findByName(produit.getName());
+		if(produitInDatabase!=null) {
+	        PreparedStatement ps = conn.prepareStatement("UPDATE produit SET quantité=quantité+? WHERE nom=?");
+	        ps.setInt(1, produit.getQuantite());
+	        ps.setString(2, produit.getName());
+	        ps.executeUpdate();
+	        return produitInDatabase.getId();
+		} else {
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO produit(nom, prix, quantité) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+	        ps.setString(1, produit.getName());
+	        ps.setDouble(2, produit.getPrix());
+	        ps.setInt(3, produit.getQuantite());
+	        ps.executeUpdate();
+	        ResultSet rs = ps.getGeneratedKeys();
+	        if(rs.next()) {
+	            return rs.getInt(1);
+	        }
+	        throw new SQLException("Impossible de récupérer l'id du nouveau produit");
+		}
     }
 }

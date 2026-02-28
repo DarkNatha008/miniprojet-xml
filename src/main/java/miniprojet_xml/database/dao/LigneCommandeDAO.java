@@ -2,7 +2,10 @@ package miniprojet_xml.database.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import miniprojet_xml.database.DatabaseConnection;
 import miniprojet_xml.model.Produit;
 
@@ -14,8 +17,7 @@ public class LigneCommandeDAO {
 		conn = DatabaseConnection.getConnection();
 	}
 	/**
-     * Insère une ligne de commande dans la table "lignes_commande"
-     * et met à jour la quantité disponible du produit.
+     * Insère une ligne de commande dans la table "lignes_commande" et met à jour la quantité disponible du produit.
      * @param produit Produit commandé
      * @param newCommandeId Id de la commande (ex: "C10")
      * @return true si l'insertion et la mise à jour sont réussies
@@ -43,7 +45,6 @@ public class LigneCommandeDAO {
 			ps.setInt(2, produit.getId());
 			ps.executeUpdate();
 			System.out.println("Quantité mise à jour pour : " + produit.getName());
-
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -52,4 +53,21 @@ public class LigneCommandeDAO {
 		}
 		return true;
     }
+	/**
+     * Renvoie la liste des produits appartenant à la commande possédant l'identifiant transmis.
+     * @param commandeId Id de la commande (ex: "C10")
+     * @return un ArrayList<Produit> contenant la liste des produits appartenant à cette commande
+     * @throws SQLException Si une erreur SQL survient
+     */
+	public ArrayList<Produit> findByCommandeId(String commandeId) throws SQLException {
+		Connection conn = DatabaseConnection.getConnection();
+	    ArrayList<Produit> produits = new ArrayList<>();
+	    PreparedStatement ps = conn.prepareStatement("SELECT p.id, p.nom, lc.prixAchat, lc.quantité FROM lignes_commande lc JOIN produit p ON lc.idProduit = p.id WHERE lc.idCommande=?");
+	    ps.setString(1, commandeId);
+	    ResultSet rs = ps.executeQuery();
+	    while (rs.next()) {
+	    	produits.add(new Produit(rs.getInt("id"), rs.getString("nom"), rs.getDouble("prixAchat"), rs.getInt("quantité")));
+	    }
+	    return produits;
+	}
 }

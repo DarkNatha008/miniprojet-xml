@@ -29,6 +29,22 @@ public class ClientDAO {
         return null;
     }
     /**
+     * Recherche un client dans la base de données à partir de son id.
+     * @param id Id du client à rechercher
+     * @return L'objet Client correspondant si trouvé, sinon null
+     * @throws SQLException Si une erreur SQL survient
+     */
+    public Client findById(int id) throws SQLException {
+        Connection conn = DatabaseConnection.getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM client WHERE id=?");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()) {
+            return new Client(rs.getInt("id"), rs.getString("nom_client"), rs.getString("email"), rs.getString("ville"));
+        }
+        return null;
+    }
+    /**
      * Insère un nouveau client dans la base de données.
      * @param client Objet Client à insérer
      * @return L'identifiant auto-généré du client inséré

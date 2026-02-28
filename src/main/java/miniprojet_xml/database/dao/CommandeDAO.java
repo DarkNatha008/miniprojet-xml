@@ -5,8 +5,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import miniprojet_xml.database.DatabaseConnection;
+import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
 
@@ -24,8 +27,6 @@ public class CommandeDAO {
      * @throws SQLException Si une erreur SQL survient
      */
 	public String insert(Commande commande) throws SQLException {
-		// connexion à la base de données
-        Connection conn = DatabaseConnection.getConnection();
 		PreparedStatement ps = conn.prepareStatement("SELECT MAX(CAST(SUBSTRING(id,2) AS UNSIGNED)) AS max_id FROM commande");
 		ResultSet rs = ps.executeQuery();
 
@@ -57,6 +58,30 @@ public class CommandeDAO {
 		}
 		
 		return newCommandeId;
+		
+	}
+	/**
+     * Renvoie la liste des commandes enregistrées de la base.
+     * @return La liste des commandes enregistrées dans la base
+     * @throws SQLException Si une erreur SQL survient
+     */
+	public ArrayList<Commande> allCommandes() throws SQLException{
+		
+		// déclaration des DAOs
+		ClientDAO clientDAO = new ClientDAO();
+		LigneCommandeDAO ligneCommandeDAO = new LigneCommandeDAO();
+		
+		ArrayList<Commande> listCommandes = new ArrayList<Commande>();
+		PreparedStatement psCommande = conn.prepareStatement("SELECT * FROM commande");
+		ResultSet rsCommande = psCommande.executeQuery();
+		while(rsCommande.next()) {
+			Client client = clientDAO.findById(rsCommande.getInt("idClient"));
+			LocalDate commandeDate = rsCommande.getDate("date").toLocalDate();
+			ArrayList<Produit> listProduit = ligneCommandeDAO.findByCommandeId(rsCommande.getString("id"));
+			Commande commande = new Commande(rsCommande.getString("id"), client, commandeDate, listProduit);
+			listCommandes.add(commande);
+		}
+		return listCommandes;
 		
 	}
 }

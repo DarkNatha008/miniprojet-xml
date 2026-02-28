@@ -184,4 +184,7 @@ public class XMLParser {
 			
 		}
 	}
+	public void exportCommandeXML(String path) {
+		Element root = new Element("commandes");
+	}
 }

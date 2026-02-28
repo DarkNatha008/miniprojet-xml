@@ -1,5 +1,7 @@
 package miniprojet_xml.xml;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -101,15 +103,12 @@ public class XMLParser {
 		
 		System.out.println("Insertion de "+path+" dans la base de données");
 		
-		
-		
 		// création des DAOs
 		
 		ClientDAO clientDAO = new ClientDAO();
 		ProduitDAO produitDAO = new ProduitDAO();
 		CommandeDAO commandeDAO = new CommandeDAO();
 
-		
 		// Chargement du fichier xml
 		
 		try {
@@ -184,7 +183,80 @@ public class XMLParser {
 			
 		}
 	}
-	public void exportCommandeXML(String path) {
-		Element root = new Element("commandes");
+	
+	/**
+	 * Exporte toutes les commandes présentes dans la base de données vers un fichier XML respectant la structure demandée.
+	 *
+	 * @param path Chemin absolu du fichier XML à générer
+	 * @throws SQLException Si une erreur survient lors de l'accès aux données
+	 */
+	public void exportCommandeXML(String path) throws SQLException {
+		// création des DAOs
+		CommandeDAO commandeDAO = new CommandeDAO();
+		
+		Element commandes = new Element("commandes");
+		
+		for(Commande c : commandeDAO.allCommandes()) {
+			Element commande = new Element("commande");
+			commande.setAttribute("id", c.getId());
+			commande.setAttribute("nb-produit", ""+c.getListProduit().size());
+			
+			Element nomClient = new Element("nom-client");
+			nomClient.setText(c.getClient().getNomClient());
+			commande.addContent(nomClient);
+			
+			Element emailClient = new Element("email");
+			emailClient.setText(c.getClient().getEmail());
+			commande.addContent(emailClient);
+			
+			Element villeClient = new Element("ville");
+			villeClient.setText(c.getClient().getVille());
+			commande.addContent(villeClient);
+			
+			Element date = new Element("date");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-M-yyyy");
+			date.setText(c.getDate().format(formatter));
+			commande.addContent(date);
+			
+			double total = 0;
+			for(Produit p : c.getListProduit()) {
+				total += (p.getPrix()*p.getQuantite());
+			}
+			Element totalElement = new Element("total");
+			totalElement.setText(""+total);
+			commande.addContent(totalElement);
+			
+			Element produits = new Element("produits");
+			for(Produit p : c.getListProduit()) {
+				Element produit = new Element("produit");
+				
+				Element nomProduit = new Element("nom");
+				nomProduit.setText(p.getName());
+				produit.addContent(nomProduit);
+				
+				Element prix = new Element("prix");
+				prix.setText(""+p.getPrix());
+				produit.addContent(prix);
+				
+				Element quantité = new Element("quantité");
+				quantité.setText(""+p.getQuantite());
+				produit.addContent(quantité);
+				
+				produits.addContent(produit);
+			}
+			commande.addContent(produits);
+			
+			commandes.addContent(commande);
+		}
+		
+		Document document = new Document(commandes);
+		XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
+		try {
+		    xmlOutput.output(document, new FileOutputStream(path));
+		    System.out.println("Fichier exporté avec succès vers : " + path);
+		} catch (IOException e) {
+		    System.out.println("Échec de l'exportation du fichier xml vers : " + path);
+		    e.printStackTrace();
+		}
 	}
 }

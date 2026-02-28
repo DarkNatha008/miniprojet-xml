@@ -24,6 +24,13 @@ public class Main {
 		
 		parser.insertCommandeData("/xml/Commande.xml");
 		
+		String projectPath = System.getProperty("user.dir");
+
+	    String exportPath = projectPath + "/src/main/resources/xml/commandes_exportés.xml";
+
+		
+		parser.exportCommandeXML(exportPath);
+		
 	}
 
 }

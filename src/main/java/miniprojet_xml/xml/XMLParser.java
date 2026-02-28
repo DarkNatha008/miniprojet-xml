@@ -1,16 +1,17 @@
 package miniprojet_xml.xml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -26,7 +27,7 @@ import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
 import java.io.StringReader;
-import java.net.URL;
+
 
 
 public class XMLParser {
@@ -40,16 +41,16 @@ public class XMLParser {
 	public void displayProduct(String path) throws JDOMException {
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			InputStream is = getClass().getResourceAsStream(path);
-			if(is == null) {
-				System.out.println("Fichier introuvable !");
-				return;
-			}
+			InputStream is = new FileInputStream(new File(path));
+			
 			Document document = builder.build(is);
 			XMLOutputter output = new XMLOutputter(Format.getPrettyFormat());
 			output.output(document, System.out);
 		}
-		catch(java.io.IOException e) {
+		catch (FileNotFoundException e) {
+		    System.out.println("Fichier introuvable : " + path);
+		}
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -70,11 +71,8 @@ public class XMLParser {
 		
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			InputStream is = getClass().getResourceAsStream(path);
-			if(is == null) {
-				System.out.println("Fichier introuvable !");
-				return;
-			}
+			InputStream is = new FileInputStream(new File(path));
+			
 			Document document = builder.build(is);
 			Element root = document.getRootElement();
 			List<Element> produits = root.getChildren();
@@ -93,8 +91,11 @@ public class XMLParser {
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
-	}
-		catch(java.io.IOException e) {
+		}
+		catch (FileNotFoundException e) {
+		    System.out.println("Fichier introuvable : " + path);
+		}
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -119,23 +120,20 @@ public class XMLParser {
 		// Chargement du fichier xml
 		
 		try {
-			InputStream isXML = getClass().getResourceAsStream(pathXML);
-		    if (isXML == null) {
-		        System.out.println("Fichier " + pathXML + " introuvable !");
-		        return;
-		    }
+			InputStream isXML = new FileInputStream(new File(pathXML));
+		    
 
 		    String xmlContent = new String(isXML.readAllBytes());
 
-		    URL dtdURL = getClass().getResource(pathDTD);
+		    File dtdFile = new File(pathDTD);
 		    
-		    if (dtdURL == null) {
+		    if (!dtdFile.exists()) {
 		        System.out.println("Fichier " + pathDTD + " introuvable !");
 		        return;
 		    }
 		    
 		    // injecte DOCTYPE avant le parsing
-		    String xmlWithDTD = "<!DOCTYPE commande SYSTEM \"" + dtdURL + "\">\n" + xmlContent;
+		    String xmlWithDTD = "<!DOCTYPE commande SYSTEM \"" + dtdFile.getAbsolutePath() + "\">\n" + xmlContent;
 		    
 		    // vérifie la validité du .dtd
 		    SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
@@ -202,7 +200,10 @@ public class XMLParser {
 			 
 		System.out.println("Fichier " + pathXML + " traité.");
 		}
-		catch(java.io.IOException e) {
+		catch (FileNotFoundException e) {
+		    System.out.println("Fichier introuvable : " + pathXML);
+		}
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 		catch (JDOMParseException e) {

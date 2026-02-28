@@ -1,34 +1,26 @@
 package miniprojet_xml.main;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.jdom2.Document;
 import org.jdom2.JDOMException;
 
-import miniprojet_xml.database.DatabaseQuery;
 import miniprojet_xml.xml.XMLParser;
 
 public class Main {
 
 	public static void main(String[] args) throws SQLException, JDOMException {
-		DatabaseQuery data = new DatabaseQuery();
+		String projectPath = System.getProperty("user.dir")+"/src/main/resources";
+		
 		System.out.println("Bienvenue sur l'application scanneur de fichier XML");
 		System.out.println("");
 		
 		XMLParser parser = new XMLParser();
-		parser.displayProduct("/xml/Produits.xml");
-		parser.insertProductData("/xml/Produits.xml");
+		parser.displayProduct(projectPath + "/xml/Produits.xml");
+		parser.insertProductData(projectPath + "/xml/Produits.xml");
 		
-		parser.insertCommandeData("/xml/Commande.xml", "/xml/Commande.dtd");
+		parser.insertCommandeData(projectPath + "/xml/Commande.xml", projectPath + "/xml/Commande.dtd");
 		
-		String projectPath = System.getProperty("user.dir");
+	    String exportPath = projectPath + "/xml/commandes_exportés.xml";
 
-	    String exportPath = projectPath + "/src/main/resources/xml/commandes_exportés.xml";
-
-		
 		parser.exportCommandeXML(exportPath);
 		
 	}

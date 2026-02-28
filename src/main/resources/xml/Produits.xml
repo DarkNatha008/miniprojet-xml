@@ -34,4 +34,58 @@
         <prix>150</prix>
         <quantité>100</quantité>
     </produit>
+
+    <produit>
+        <nom>Chaise</nom>
+        <prix>25</prix>
+        <quantité>250</quantité>
+    </produit>
+
+    <produit>
+        <nom>Four</nom>
+        <prix>300</prix>
+        <quantité>50</quantité>
+    </produit>
+
+    <produit>
+        <nom>Table</nom>
+        <prix>300</prix>
+        <quantité>20</quantité>
+    </produit>
+
+    <produit>
+        <nom>Cafetière</nom>
+        <prix>30</prix>
+        <quantité>200</quantité>
+    </produit>
+
+    <produit>
+        <nom>PC portable</nom>
+        <prix>2500</prix>
+        <quantité>20</quantité>
+    </produit>
+
+    <produit>
+        <nom>Fauteuil</nom>
+        <prix>230</prix>
+        <quantité>10</quantité>
+    </produit>
+
+    <produit>
+        <nom>Lit</nom>
+        <prix>450</prix>
+        <quantité>5</quantité>
+    </produit>
+
+    <produit>
+        <nom>Meuble de rangement</nom>
+        <prix>90</prix>
+        <quantité>120</quantité>
+    </produit>
+
+    <produit>
+        <nom>Commode</nom>
+        <prix>240</prix>
+        <quantité>40</quantité>
+    </produit>
 </produits>

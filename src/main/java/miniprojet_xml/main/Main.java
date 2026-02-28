@@ -22,7 +22,7 @@ public class Main {
 		parser.displayProduct("/xml/Produits.xml");
 		parser.insertProductData("/xml/Produits.xml");
 		
-		parser.insertCommandeData("/xml/Commande.xml");
+		parser.insertCommandeData("/xml/Commande.xml", "/xml/Commande.dtd");
 		
 		String projectPath = System.getProperty("user.dir");
 

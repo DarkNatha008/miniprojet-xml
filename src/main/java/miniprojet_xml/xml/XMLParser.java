@@ -3,16 +3,20 @@ package miniprojet_xml.xml;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.DocType;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import miniprojet_xml.database.dao.ClientDAO;
@@ -21,6 +25,9 @@ import miniprojet_xml.database.dao.ProduitDAO;
 import miniprojet_xml.model.Client;
 import miniprojet_xml.model.Commande;
 import miniprojet_xml.model.Produit;
+import java.io.StringReader;
+import java.net.URL;
+
 
 public class XMLParser {
 	
@@ -94,14 +101,14 @@ public class XMLParser {
 	
 	/**
 	 * Insert les données du fichier commande.xml dans la base de données
-	 * @param path
+	 * @param pathXML
 	 * @throws JDOMException
 	 * @throws SQLException
 	 */
 	
-	public void insertCommandeData(String path) throws JDOMException, SQLException {
+	public void insertCommandeData(String pathXML, String pathDTD) throws JDOMException, SQLException {
 		
-		System.out.println("Insertion de "+path+" dans la base de données");
+		System.out.println("Insertion de "+pathXML+" dans la base de données");
 		
 		// création des DAOs
 		
@@ -112,13 +119,29 @@ public class XMLParser {
 		// Chargement du fichier xml
 		
 		try {
-			InputStream is = getClass().getResourceAsStream(path);
-			if(is == null) {
-				System.out.println("Fichier introuvable !");
-				return;
-			}
-			SAXBuilder builder = new SAXBuilder();
-			Document document = builder.build(is);
+			InputStream isXML = getClass().getResourceAsStream(pathXML);
+		    if (isXML == null) {
+		        System.out.println("Fichier " + pathXML + " introuvable !");
+		        return;
+		    }
+
+		    String xmlContent = new String(isXML.readAllBytes());
+
+		    URL dtdURL = getClass().getResource(pathDTD);
+		    
+		    if (dtdURL == null) {
+		        System.out.println("Fichier " + pathDTD + " introuvable !");
+		        return;
+		    }
+		    
+		    // injecte DOCTYPE avant le parsing
+		    String xmlWithDTD = "<!DOCTYPE commande SYSTEM \"" + dtdURL + "\">\n" + xmlContent;
+		    
+		    // vérifie la validité du .dtd
+		    SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
+		    Document document = builder.build(new StringReader(xmlWithDTD));
+
+		    System.out.println("XML validé avec succès avec le DTD : " + pathDTD);
 
 			Element racine = document.getRootElement();
 			
@@ -176,11 +199,15 @@ public class XMLParser {
 				e.printStackTrace();
 				throw e;
 			}
-		System.out.println("Fichier " + path + " traité.");
+			 
+		System.out.println("Fichier " + pathXML + " traité.");
 		}
 		catch(java.io.IOException e) {
 			e.printStackTrace();
-			
+		}
+		catch (JDOMParseException e) {
+		    System.out.println("Erreur de validation DTD :" + e.getMessage());
+		    e.printStackTrace();
 		}
 	}
 	

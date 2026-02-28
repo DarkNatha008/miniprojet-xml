@@ -48,7 +48,7 @@ public class XMLParser {
 			output.output(document, System.out);
 		}
 		catch (FileNotFoundException e) {
-		    System.out.println("Fichier introuvable : " + path);
+			System.out.println("Fichier introuvable : " + path);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -93,7 +93,7 @@ public class XMLParser {
 			}
 		}
 		catch (FileNotFoundException e) {
-		    System.out.println("Fichier introuvable : " + path);
+			System.out.println("Fichier introuvable : " + path);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
@@ -121,25 +121,25 @@ public class XMLParser {
 		
 		try {
 			InputStream isXML = new FileInputStream(new File(pathXML));
-		    
+			
 
-		    String xmlContent = new String(isXML.readAllBytes());
+			String xmlContent = new String(isXML.readAllBytes());
 
-		    File dtdFile = new File(pathDTD);
-		    
-		    if (!dtdFile.exists()) {
-		        System.out.println("Fichier " + pathDTD + " introuvable !");
-		        return;
-		    }
-		    
-		    // injecte DOCTYPE avant le parsing
-		    String xmlWithDTD = "<!DOCTYPE commande SYSTEM \"" + dtdFile.getAbsolutePath() + "\">\n" + xmlContent;
-		    
-		    // vérifie la validité du .dtd
-		    SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
-		    Document document = builder.build(new StringReader(xmlWithDTD));
+			File dtdFile = new File(pathDTD);
+			
+			if (!dtdFile.exists()) {
+				System.out.println("Fichier " + pathDTD + " introuvable !");
+				return;
+			}
+			
+			// injecte DOCTYPE avant le parsing
+			String xmlWithDTD = "<!DOCTYPE commande SYSTEM \"" + dtdFile.getAbsolutePath() + "\">\n" + xmlContent;
+			
+			// vérifie la validité du .dtd
+			SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
+			Document document = builder.build(new StringReader(xmlWithDTD));
 
-		    System.out.println("XML validé avec succès avec le DTD : " + pathDTD);
+			System.out.println("XML validé avec succès avec le DTD : " + pathDTD);
 
 			Element racine = document.getRootElement();
 			
@@ -201,14 +201,14 @@ public class XMLParser {
 		System.out.println("Fichier " + pathXML + " traité.");
 		}
 		catch (FileNotFoundException e) {
-		    System.out.println("Fichier introuvable : " + pathXML);
+			System.out.println("Fichier introuvable : " + pathXML);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
 		catch (JDOMParseException e) {
-		    System.out.println("Erreur de validation DTD :" + e.getMessage());
-		    e.printStackTrace();
+			System.out.println("Erreur de validation DTD :" + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -280,11 +280,11 @@ public class XMLParser {
 		Document document = new Document(commandes);
 		XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
 		try {
-		    xmlOutput.output(document, new FileOutputStream(path));
-		    System.out.println("Fichier exporté avec succès vers : " + path);
+			xmlOutput.output(document, new FileOutputStream(path));
+			System.out.println("Fichier exporté avec succès vers : " + path);
 		} catch (IOException e) {
-		    System.out.println("Échec de l'exportation du fichier xml vers : " + path);
-		    e.printStackTrace();
+			System.out.println("Échec de l'exportation du fichier xml vers : " + path);
+			e.printStackTrace();
 		}
 	}
 }

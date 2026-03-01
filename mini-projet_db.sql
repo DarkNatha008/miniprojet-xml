@@ -89,23 +89,6 @@ CREATE TABLE `lignes_commande` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déclencheurs `lignes_commande`
---
-DELIMITER $$
-CREATE TRIGGER `CALCULE_PRIX_ACHAT` BEFORE INSERT ON `lignes_commande` FOR EACH ROW BEGIN
-    DECLARE prixFournisseur DOUBLE;
-
-    SELECT prix
-    INTO prixFournisseur
-    FROM produit
-    WHERE id = NEW.idProduit;
-
-    SET NEW.prixAchat = prixFournisseur * NEW.quantité;
-END
-$$
-DELIMITER ;
-
---
 -- Déchargement des données de la table `lignes_commande`
 --
 
@@ -169,6 +152,24 @@ INSERT INTO `produit` (`id`, `nom`, `prix`, `quantité`) VALUES
 (15, 'Lit', 900, 5),
 (16, 'Meuble de rangement', 180, 120),
 (17, 'Commode', 480, 40);
+
+--
+-- Déclencheurs `lignes_commande`
+--
+DELIMITER $$
+CREATE TRIGGER `CALCULE_PRIX_ACHAT` BEFORE INSERT ON `lignes_commande` FOR EACH ROW BEGIN
+    DECLARE prixFournisseur DOUBLE;
+
+    SELECT prix
+    INTO prixFournisseur
+    FROM produit
+    WHERE id = NEW.idProduit;
+
+    SET NEW.prixAchat = prixFournisseur * NEW.quantité;
+END
+$$
+DELIMITER ;
+
 
 --
 -- Index pour les tables déchargées

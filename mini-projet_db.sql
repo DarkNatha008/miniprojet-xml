@@ -89,34 +89,6 @@ CREATE TABLE `lignes_commande` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `lignes_commande`
---
-
-INSERT INTO `lignes_commande` (`id`, `idCommande`, `idProduit`, `prixAchat`, `quantité`) VALUES
-(1, 'C1', 3, 20, 3),
-(2, 'C1', 4, 10, 4),
-(3, 'C1', 5, 100, 1),
-(5, 'C2', 8, 1500, 5),
-(6, 'C2', 4, 90, 9),
-(7, 'C6', 3, 0, 0),
-(8, 'C3', 4, 30, 3),
-(9, 'C4', 5, 900, 9),
-(10, 'C4', 3, 460, 23),
-(11, 'C4', 1, 4000, 8),
-(12, 'C7', 6, 1200, 6),
-(13, 'C6', 4, 40, 4),
-(14, 'C8', 2, 167500, 67),
-(15, 'C9', 8, 1200, 4),
-(16, 'C9', 2, 12500, 5),
-(17, 'C9', 4, 70, 7),
-(18, 'C3', 5, 1000, 10),
-(19, 'C5', 6, 2600, 13),
-(20, 'C1', 5, 700, 7),
-(21, 'C10', 3, 60, 3),
-(22, 'C10', 4, 40, 4),
-(23, 'C10', 5, 100, 1);
-
---
 -- Déclencheurs `lignes_commande`
 --
 DELIMITER $$
@@ -132,6 +104,35 @@ CREATE TRIGGER `CALCULE_PRIX_ACHAT` BEFORE INSERT ON `lignes_commande` FOR EACH 
 END
 $$
 DELIMITER ;
+
+--
+-- Déchargement des données de la table `lignes_commande`
+--
+
+INSERT INTO `lignes_commande` (`id`, `idCommande`, `idProduit`, `prixAchat`, `quantité`) VALUES
+(1, 'C1', 3, 60, 3),
+(2, 'C1', 4, 40, 4),
+(3, 'C1', 5, 100, 1),
+(5, 'C2', 8, 1500, 5),
+(6, 'C2', 4, 90, 9),
+(7, 'C6', 3, 20, 1),
+(8, 'C3', 4, 30, 3),
+(9, 'C4', 5, 900, 9),
+(10, 'C4', 3, 460, 23),
+(11, 'C4', 1, 4000, 8),
+(12, 'C7', 6, 1200, 6),
+(13, 'C6', 4, 40, 4),
+(14, 'C8', 2, 167500, 67),
+(15, 'C9', 8, 1200, 4),
+(16, 'C9', 2, 12500, 5),
+(17, 'C9', 4, 70, 7),
+(18, 'C3', 5, 1000, 10),
+(19, 'C5', 6, 2600, 13),
+(20, 'C1', 6, 700, 7),
+(21, 'C10', 3, 60, 3),
+(22, 'C10', 4, 40, 4),
+(23, 'C10', 5, 100, 1);
+
 
 -- --------------------------------------------------------
 

@@ -66,7 +66,7 @@ public class LigneCommandeDAO {
 		ps.setString(1, commandeId);
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
-			produits.add(new Produit(rs.getInt("id"), rs.getString("nom"), rs.getDouble("prixAchat"), rs.getInt("quantité")));
+			produits.add(new Produit(rs.getInt("id"), rs.getString("nom"), rs.getDouble("prixAchat")/rs.getInt("quantité"), rs.getInt("quantité")));
 		}
 		return produits;
 	}

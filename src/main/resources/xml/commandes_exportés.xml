@@ -5,7 +5,36 @@
     <email>durand@gmail.com</email>
     <ville>Paris</ville>
     <date>25-5-2022</date>
-    <total>5100.0</total>
+    <total>830.0</total>
+    <produits>
+      <produit>
+        <nom>Clavier</nom>
+        <prix>6.666666666666667</prix>
+        <quantité>3</quantité>
+      </produit>
+      <produit>
+        <nom>Souris</nom>
+        <prix>2.5</prix>
+        <quantité>4</quantité>
+      </produit>
+      <produit>
+        <nom>Écran</nom>
+        <prix>100.0</prix>
+        <quantité>1</quantité>
+      </produit>
+      <produit>
+        <nom>Écran</nom>
+        <prix>100.0</prix>
+        <quantité>7</quantité>
+      </produit>
+    </produits>
+  </commande>
+  <commande id="C10" nb-produit="3">
+    <nom-client>Durand</nom-client>
+    <email>durand@gmail.com</email>
+    <ville>Paris</ville>
+    <date>25-5-2022</date>
+    <total>200.0</total>
     <produits>
       <produit>
         <nom>Clavier</nom>
@@ -22,28 +51,47 @@
         <prix>100.0</prix>
         <quantité>1</quantité>
       </produit>
-      <produit>
-        <nom>Écran</nom>
-        <prix>700.0</prix>
-        <quantité>7</quantité>
-      </produit>
     </produits>
   </commande>
-  <commande id="C10" nb-produit="3">
+  <commande id="C11" nb-produit="3">
     <nom-client>Durand</nom-client>
     <email>durand@gmail.com</email>
     <ville>Paris</ville>
     <date>25-5-2022</date>
-    <total>440.0</total>
+    <total>200.0</total>
     <produits>
       <produit>
         <nom>Clavier</nom>
-        <prix>60.0</prix>
+        <prix>20.0</prix>
         <quantité>3</quantité>
       </produit>
       <produit>
         <nom>Souris</nom>
-        <prix>40.0</prix>
+        <prix>10.0</prix>
+        <quantité>4</quantité>
+      </produit>
+      <produit>
+        <nom>Écran</nom>
+        <prix>100.0</prix>
+        <quantité>1</quantité>
+      </produit>
+    </produits>
+  </commande>
+  <commande id="C12" nb-produit="3">
+    <nom-client>Durand</nom-client>
+    <email>durand@gmail.com</email>
+    <ville>Paris</ville>
+    <date>25-5-2022</date>
+    <total>200.0</total>
+    <produits>
+      <produit>
+        <nom>Clavier</nom>
+        <prix>20.0</prix>
+        <quantité>3</quantité>
+      </produit>
+      <produit>
+        <nom>Souris</nom>
+        <prix>10.0</prix>
         <quantité>4</quantité>
       </produit>
       <produit>
@@ -58,16 +106,16 @@
     <email>dupuis@gmail.com</email>
     <ville>Nantes</ville>
     <date>2-2-2026</date>
-    <total>8310.0</total>
+    <total>1590.0</total>
     <produits>
       <produit>
         <nom>Machine à laver</nom>
-        <prix>1500.0</prix>
+        <prix>300.0</prix>
         <quantité>5</quantité>
       </produit>
       <produit>
         <nom>Souris</nom>
-        <prix>90.0</prix>
+        <prix>10.0</prix>
         <quantité>9</quantité>
       </produit>
     </produits>
@@ -77,16 +125,16 @@
     <email>jean@gmail.com</email>
     <ville>Caen</ville>
     <date>1-2-2017</date>
-    <total>10090.0</total>
+    <total>1030.0</total>
     <produits>
       <produit>
         <nom>Souris</nom>
-        <prix>30.0</prix>
+        <prix>10.0</prix>
         <quantité>3</quantité>
       </produit>
       <produit>
         <nom>Écran</nom>
-        <prix>1000.0</prix>
+        <prix>100.0</prix>
         <quantité>10</quantité>
       </produit>
     </produits>
@@ -96,21 +144,21 @@
     <email>martin@gmail.com</email>
     <ville>Rennes</ville>
     <date>8-6-2016</date>
-    <total>50680.0</total>
+    <total>5360.0</total>
     <produits>
       <produit>
         <nom>Écran</nom>
-        <prix>900.0</prix>
+        <prix>100.0</prix>
         <quantité>9</quantité>
       </produit>
       <produit>
         <nom>Clavier</nom>
-        <prix>460.0</prix>
+        <prix>20.0</prix>
         <quantité>23</quantité>
       </produit>
       <produit>
         <nom>telephone</nom>
-        <prix>4000.0</prix>
+        <prix>500.0</prix>
         <quantité>8</quantité>
       </produit>
     </produits>
@@ -120,11 +168,11 @@
     <email>martin@gmail.com</email>
     <ville>Rennes</ville>
     <date>28-2-2026</date>
-    <total>33800.0</total>
+    <total>2600.0</total>
     <produits>
       <produit>
         <nom>Télévision</nom>
-        <prix>2600.0</prix>
+        <prix>200.0</prix>
         <quantité>13</quantité>
       </produit>
     </produits>
@@ -134,16 +182,16 @@
     <email>morel@mail.com</email>
     <ville>Paris</ville>
     <date>23-9-2021</date>
-    <total>160.0</total>
+    <total>NaN</total>
     <produits>
       <produit>
         <nom>Clavier</nom>
-        <prix>0.0</prix>
+        <prix>NaN</prix>
         <quantité>0</quantité>
       </produit>
       <produit>
         <nom>Souris</nom>
-        <prix>40.0</prix>
+        <prix>10.0</prix>
         <quantité>4</quantité>
       </produit>
     </produits>
@@ -153,11 +201,11 @@
     <email>durand@gmail.com</email>
     <ville>Paris</ville>
     <date>14-4-2023</date>
-    <total>7200.0</total>
+    <total>1200.0</total>
     <produits>
       <produit>
         <nom>Télévision</nom>
-        <prix>1200.0</prix>
+        <prix>200.0</prix>
         <quantité>6</quantité>
       </produit>
     </produits>
@@ -167,11 +215,11 @@
     <email>dupuis@gmail.com</email>
     <ville>Nantes</ville>
     <date>24-10-2025</date>
-    <total>1.12225E7</total>
+    <total>167500.0</total>
     <produits>
       <produit>
         <nom>PC</nom>
-        <prix>167500.0</prix>
+        <prix>2500.0</prix>
         <quantité>67</quantité>
       </produit>
     </produits>
@@ -181,21 +229,21 @@
     <email>claude@gmail.com</email>
     <ville>Cherbourg</ville>
     <date>18-12-2019</date>
-    <total>67790.0</total>
+    <total>13770.0</total>
     <produits>
       <produit>
         <nom>Machine à laver</nom>
-        <prix>1200.0</prix>
+        <prix>300.0</prix>
         <quantité>4</quantité>
       </produit>
       <produit>
         <nom>PC</nom>
-        <prix>12500.0</prix>
+        <prix>2500.0</prix>
         <quantité>5</quantité>
       </produit>
       <produit>
         <nom>Souris</nom>
-        <prix>70.0</prix>
+        <prix>10.0</prix>
         <quantité>7</quantité>
       </produit>
     </produits>
